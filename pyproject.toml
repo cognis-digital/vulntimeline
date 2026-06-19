@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cognis-vulntimeline"
+version = "1.0.0"
+description = "Vulnerability disclosure timeline builder: remediation windows, exposure analysis, and risky-pattern flags."
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "Cognis Digital" }]
+maintainers = [{ name = "Cognis Digital" }]
+keywords = ["vulnerability", "disclosure", "timeline", "security", "remediation", "osint", "defensive"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Information Technology",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Security",
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/cognis-digital/vulntimeline"
+
+[project.scripts]
+vulntimeline = "vulntimeline.cli:main"
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0"]
+
+[tool.setuptools]
+packages = ["vulntimeline"]
+
+[tool.setuptools.package-data]
+vulntimeline = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
