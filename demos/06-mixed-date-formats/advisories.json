@@ -1,0 +1,48 @@
+{
+  "advisories": [
+    {
+      "id": "MERGE-2025-01",
+      "title": "From vendor PSIRT feed (ISO datetime, UTC)",
+      "severity": "high",
+      "reported": "2025-03-05T14:20:00Z",
+      "disclosed": "2025-04-01T00:00:00Z",
+      "patched": "2025-04-01T00:00:00Z"
+    },
+    {
+      "id": "MERGE-2025-02",
+      "title": "From a US-formatted spreadsheet export",
+      "severity": "medium",
+      "discovered": "03/12/2025",
+      "reported": "03/14/2025",
+      "disclosed": "04/30/2025",
+      "patched": "05/06/2025"
+    },
+    {
+      "id": "MERGE-2025-03",
+      "title": "From a slash-ISO ticketing export",
+      "severity": "low",
+      "discovered": "2025/02/01",
+      "reported": "2025/02/03",
+      "disclosed": "2025/03/15",
+      "patched": "2025/03/18"
+    },
+    {
+      "id": "MERGE-2025-04",
+      "title": "From a human-written advisory note (spelled month)",
+      "severity": "critical",
+      "discovered": "January 9, 2025",
+      "reported": "January 10, 2025",
+      "disclosed": "Feb 14, 2025",
+      "patched": "Feb 20, 2025"
+    },
+    {
+      "id": "MERGE-2025-05",
+      "title": "From a compact YYYYMMDD log field",
+      "severity": "medium",
+      "discovered": "20250401",
+      "reported": "20250402",
+      "disclosed": "20250515",
+      "patched": "20250520"
+    }
+  ]
+}

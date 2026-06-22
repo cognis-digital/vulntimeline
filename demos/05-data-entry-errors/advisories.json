@@ -1,0 +1,31 @@
+{
+  "advisories": [
+    {
+      "id": "QA-CHECK-001",
+      "title": "Patched date recorded before disclosure (transposed entry)",
+      "severity": "medium",
+      "discovered": "2025-03-01",
+      "reported": "2025-03-04",
+      "disclosed": "2025-04-20",
+      "patched": "2025-04-02"
+    },
+    {
+      "id": "QA-CHECK-002",
+      "title": "Reported earlier than discovered (impossible ordering)",
+      "severity": "low",
+      "discovered": "2025-05-10",
+      "reported": "2025-05-02",
+      "disclosed": "2025-05-30",
+      "patched": "2025-06-04"
+    },
+    {
+      "id": "QA-CHECK-003",
+      "title": "Disclosed before reported (typo in year)",
+      "severity": "high",
+      "discovered": "2025-02-01",
+      "reported": "2025-02-05",
+      "disclosed": "2024-02-20",
+      "patched": "2025-03-01"
+    }
+  ]
+}

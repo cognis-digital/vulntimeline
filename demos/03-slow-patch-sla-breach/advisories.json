@@ -1,0 +1,31 @@
+{
+  "advisories": [
+    {
+      "id": "INTERNAL-2025-0042",
+      "title": "SQL injection in legacy reporting module",
+      "severity": "high",
+      "discovered": "2025-02-01",
+      "reported": "2025-02-03",
+      "disclosed": "2025-02-10",
+      "patched": "2025-05-28"
+    },
+    {
+      "id": "INTERNAL-2025-0043",
+      "title": "Outdated TLS cipher suites on partner API gateway",
+      "severity": "medium",
+      "discovered": "2025-02-15",
+      "reported": "2025-02-16",
+      "disclosed": "2025-02-20",
+      "patched": "2025-03-12"
+    },
+    {
+      "id": "INTERNAL-2025-0044",
+      "title": "Privilege escalation via misconfigured cron job",
+      "severity": "high",
+      "discovered": "2025-03-01",
+      "reported": "2025-03-02",
+      "disclosed": "2025-03-08",
+      "patched": "2025-06-15"
+    }
+  ]
+}

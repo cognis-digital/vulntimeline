@@ -95,6 +95,7 @@ Plus aggregate medians and counts across the set.
 vulntimeline flags examples/advisories.json
 vulntimeline flags examples/advisories.json --max-ttp 30
 vulntimeline flags examples/advisories.json --max-ttp 30 --fail-on-any
+vulntimeline flags examples/advisories.json --sarif
 ```
 
 Detected flag kinds:
@@ -109,6 +110,41 @@ Detected flag kinds:
 `--fail-on-any` makes the command exit with code **2** when any flag is
 detected — useful as a CI quality gate. Otherwise exit code is `0`; input
 errors exit `1`.
+
+#### SARIF 2.1.0 export
+
+```bash
+vulntimeline flags examples/advisories.json --sarif > vulntimeline.sarif
+vulntimeline flags examples/advisories.json --max-ttp 30 --sarif
+```
+
+`--sarif` emits a **SARIF 2.1.0** log instead of a table/JSON. Each flag becomes
+a `result` with a `ruleId` (the flag kind), a `level` (`error`/`warning`/`note`
+mapped from severity), a logical location naming the advisory id, and a stable
+`partialFingerprints` entry so re-runs dedupe in dashboards. Upload it to any
+SARIF consumer — GitHub code scanning (`github/codeql-action/upload-sarif`),
+Azure DevOps, or DefectDojo — to track disclosure-hygiene findings alongside
+your SAST/DAST results. `--fail-on-any` still gates the exit code when combined
+with `--sarif`.
+
+---
+
+## Demos
+
+Realistic, self-contained scenarios live under [`demos/`](demos/). Each holds an
+`advisories.json` in the real input format plus a `SCENARIO.md` describing where
+the data came from, what to expect, the exact command to run, and how to act.
+
+| Demo | Scenario |
+|------|----------|
+| [`01-coordinated-disclosure-healthy`](demos/01-coordinated-disclosure-healthy/) | Patch-before-public CVD baseline of good hygiene |
+| [`02-zero-day-exploited-first`](demos/02-zero-day-exploited-first/) | Actively-exploited edge-appliance zero-days; emergency patching |
+| [`03-slow-patch-sla-breach`](demos/03-slow-patch-sla-breach/) | Remediation-SLA breach review with `--max-ttp` |
+| [`04-unpatched-backlog`](demos/04-unpatched-backlog/) | Bug-bounty backlog triage — what's still open |
+| [`05-data-entry-errors`](demos/05-data-entry-errors/) | Data-quality sweep catching inconsistent date entries |
+| [`06-mixed-date-formats`](demos/06-mixed-date-formats/) | Merging feeds with ISO/US/slashed/spelled/compact dates |
+| [`07-ci-quality-gate`](demos/07-ci-quality-gate/) | CI release gate that blocks on open exploited/unpatched issues |
+| [`08-sarif-code-scanning`](demos/08-sarif-code-scanning/) | SARIF 2.1.0 export into a code-scanning dashboard |
 
 ---
 

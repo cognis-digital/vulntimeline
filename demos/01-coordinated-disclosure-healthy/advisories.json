@@ -1,0 +1,31 @@
+{
+  "advisories": [
+    {
+      "id": "ACME-2025-001",
+      "title": "Reflected XSS in support-portal search",
+      "severity": "medium",
+      "discovered": "2025-03-02",
+      "reported": "2025-03-03",
+      "disclosed": "2025-04-15",
+      "patched": "2025-04-10"
+    },
+    {
+      "id": "ACME-2025-002",
+      "title": "IDOR exposing other tenants' invoice PDFs",
+      "severity": "high",
+      "discovered": "2025-03-18",
+      "reported": "2025-03-19",
+      "disclosed": "2025-05-06",
+      "patched": "2025-05-01"
+    },
+    {
+      "id": "ACME-2025-003",
+      "title": "Missing rate limit on password-reset endpoint",
+      "severity": "low",
+      "discovered": "2025-04-01",
+      "reported": "2025-04-02",
+      "disclosed": "2025-05-20",
+      "patched": "2025-05-14"
+    }
+  ]
+}

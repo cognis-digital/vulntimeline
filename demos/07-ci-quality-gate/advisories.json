@@ -1,0 +1,21 @@
+{
+  "advisories": [
+    {
+      "id": "REL-GATE-1",
+      "title": "Dependency advisory: deserialization gadget in bundled lib",
+      "severity": "high",
+      "discovered": "2025-06-01",
+      "reported": "2025-06-01",
+      "disclosed": "2025-06-05",
+      "exploited": "2025-06-07"
+    },
+    {
+      "id": "REL-GATE-2",
+      "title": "Hardcoded credential in shipped container image",
+      "severity": "critical",
+      "discovered": "2025-06-02",
+      "reported": "2025-06-02",
+      "disclosed": "2025-06-04"
+    }
+  ]
+}

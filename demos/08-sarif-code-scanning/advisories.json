@@ -1,0 +1,31 @@
+{
+  "advisories": [
+    {
+      "id": "PSIRT-2025-77",
+      "title": "Heap overflow in media-transcoding worker",
+      "severity": "critical",
+      "discovered": "2025-05-01",
+      "reported": "2025-05-02",
+      "disclosed": "2025-05-20",
+      "exploited": "2025-05-18",
+      "patched": "2025-06-10"
+    },
+    {
+      "id": "PSIRT-2025-78",
+      "title": "Directory traversal in firmware update unpacker",
+      "severity": "high",
+      "discovered": "2025-05-05",
+      "reported": "2025-05-06",
+      "disclosed": "2025-06-01"
+    },
+    {
+      "id": "PSIRT-2025-79",
+      "title": "Weak default permissions on config directory",
+      "severity": "low",
+      "discovered": "2025-05-12",
+      "reported": "2025-05-13",
+      "disclosed": "2025-06-15",
+      "patched": "2025-08-30"
+    }
+  ]
+}

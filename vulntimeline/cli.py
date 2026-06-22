@@ -28,6 +28,7 @@ from .render import (
     render_metrics_table,
     render_flags_table,
 )
+from .sarif import flags_to_sarif
 
 
 def _read_source(path: str) -> str:
@@ -86,7 +87,11 @@ def cmd_flags(args: argparse.Namespace) -> int:
     advisories = _load(args.advisories)
     flags = detect_flags(advisories, max_time_to_patch=args.max_ttp)
 
-    if args.json:
+    if args.sarif:
+        source = "advisories.json" if args.advisories == "-" else args.advisories
+        log = flags_to_sarif(flags, source_path=source)
+        print(json.dumps(log, indent=2))
+    elif args.json:
         print(json.dumps(flags, indent=2))
     else:
         sys.stdout.write(render_flags_table(flags))
@@ -119,6 +124,10 @@ def build_parser() -> argparse.ArgumentParser:
     p_flags = sub.add_parser("flags", help="detect risky patterns")
     p_flags.add_argument("advisories", help="path to advisories JSON ('-' for stdin)")
     p_flags.add_argument("--json", action="store_true", help="emit JSON instead of a table")
+    p_flags.add_argument(
+        "--sarif", action="store_true",
+        help="emit a SARIF 2.1.0 log (for code-scanning dashboards)",
+    )
     p_flags.add_argument(
         "--max-ttp", type=int, default=None, metavar="N",
         help="flag advisories whose time-to-patch exceeds N days",

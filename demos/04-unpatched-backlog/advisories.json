@@ -1,0 +1,36 @@
+{
+  "advisories": [
+    {
+      "id": "BUG-BOUNTY-1187",
+      "title": "Server-side template injection in email-preview renderer",
+      "severity": "high",
+      "discovered": "2025-04-10",
+      "reported": "2025-04-10",
+      "disclosed": "2025-05-25"
+    },
+    {
+      "id": "BUG-BOUNTY-1203",
+      "title": "Open redirect on OAuth callback handler",
+      "severity": "medium",
+      "discovered": "2025-04-22",
+      "reported": "2025-04-22",
+      "disclosed": "2025-06-01"
+    },
+    {
+      "id": "BUG-BOUNTY-1219",
+      "title": "Sensitive token leaked in client-side source map",
+      "severity": "medium",
+      "discovered": "2025-05-05",
+      "reported": "2025-05-05"
+    },
+    {
+      "id": "BUG-BOUNTY-1101",
+      "title": "CSRF on account-deletion endpoint (fixed)",
+      "severity": "high",
+      "discovered": "2025-02-01",
+      "reported": "2025-02-01",
+      "disclosed": "2025-03-15",
+      "patched": "2025-03-10"
+    }
+  ]
+}
