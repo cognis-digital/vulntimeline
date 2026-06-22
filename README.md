@@ -233,3 +233,7 @@ On Windows, set `PYTHONUTF8=1` for consistent encoding.
 ## License
 
 License: **COCL 1.0**. Maintained by **Cognis Digital**.
+
+## Bundled vulnerability database
+
+Ships `vulntimeline/cognis_vulndb.jsonl.gz` — **262,351 real vulnerabilities** (OSV: PyPI/npm/Go/Maven/RubyGems/crates.io/NuGet) with detailed metadata (CVE/GHSA aliases, ecosystem, severity/CVSS, affected packages, dates). Pure-stdlib offline loader `vulndb_local.VulnDB` (`count`/`by_cve`/`by_package`/`search`), air-gap ready. Refresh/extend via `datafeeds.py bulk`.
