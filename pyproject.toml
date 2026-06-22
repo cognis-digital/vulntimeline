@@ -37,7 +37,7 @@ dev = ["pytest>=7.0"]
 packages = ["vulntimeline"]
 
 [tool.setuptools.package-data]
-vulntimeline = ["py.typed"]
+vulntimeline = ["py.typed", "data_feeds_2026.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

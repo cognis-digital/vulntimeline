@@ -33,3 +33,11 @@ jobs:
           vulntimeline build examples/advisories.json
           vulntimeline metrics examples/advisories.json
           vulntimeline flags examples/advisories.json
+
+      - name: Smoke-test data feeds (offline / air-gap)
+        env:
+          COGNIS_FEEDS_CACHE: ${{ github.workspace }}/demos/09-live-feed-enrichment/feeds_cache
+        run: |
+          vulntimeline feeds list
+          vulntimeline feeds get cisa-kev --offline
+          vulntimeline build demos/09-live-feed-enrichment/advisories.json --enrich --offline --no-ascii

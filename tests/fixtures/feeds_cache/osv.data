@@ -1,0 +1,20 @@
+{
+  "vulns": [
+    {
+      "id": "GHSA-jfh8-c2jp-5v3q",
+      "summary": "Remote code execution in Apache Log4j2",
+      "aliases": [
+        "CVE-2021-44228"
+      ],
+      "modified": "2024-01-01T00:00:00Z",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "Maven",
+            "name": "org.apache.logging.log4j:log4j-core"
+          }
+        }
+      ]
+    }
+  ]
+}

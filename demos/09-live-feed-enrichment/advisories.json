@@ -1,0 +1,42 @@
+{
+  "advisories": [
+    {
+      "id": "CVE-2021-44228",
+      "title": "Apache Log4j2 JNDI remote code execution (Log4Shell)",
+      "severity": "critical",
+      "discovered": "2021-11-24",
+      "reported": "2021-11-24",
+      "disclosed": "2021-12-10",
+      "exploited": "2021-12-09",
+      "patched": "2021-12-10"
+    },
+    {
+      "id": "CVE-2021-34527",
+      "title": "Windows Print Spooler remote code execution (PrintNightmare)",
+      "severity": "high",
+      "discovered": "2021-06-08",
+      "reported": "2021-06-08",
+      "disclosed": "2021-07-01",
+      "exploited": "2021-06-29",
+      "patched": "2021-07-06"
+    },
+    {
+      "id": "CVE-2014-0160",
+      "title": "OpenSSL TLS heartbeat information disclosure (Heartbleed)",
+      "severity": "high",
+      "discovered": "2014-04-01",
+      "reported": "2014-04-01",
+      "disclosed": "2014-04-07",
+      "patched": "2014-04-07"
+    },
+    {
+      "id": "INTERNAL-2025-0001",
+      "title": "Synthetic non-CVE advisory (no feed match expected)",
+      "severity": "medium",
+      "discovered": "2025-01-01",
+      "reported": "2025-01-02",
+      "disclosed": "2025-02-01",
+      "patched": "2025-02-05"
+    }
+  ]
+}
