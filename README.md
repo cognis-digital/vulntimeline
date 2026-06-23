@@ -1,5 +1,13 @@
 # vulntimeline
 
+![CI](https://github.com/cognis-digital/vulntimeline/actions/workflows/ci.yml/badge.svg)
+![ports](https://github.com/cognis-digital/vulntimeline/actions/workflows/ports.yml/badge.svg)
+![python](https://img.shields.io/badge/python-3.10%2B-blue)
+![deps](https://img.shields.io/badge/runtime%20deps-0-brightgreen)
+![offline](https://img.shields.io/badge/network-none%20(offline%2Fair--gap)-success)
+![license](https://img.shields.io/badge/license-COCL%201.0-lightgrey)
+![vuln%20DB](https://img.shields.io/badge/bundled%20OSV%20DB-262k%20vulns-orange)
+
 A vulnerability **disclosure timeline builder** for defensive security work.
 
 `vulntimeline` ingests advisory records, orders them chronologically, computes
@@ -8,13 +16,47 @@ and flags risky patterns such as **exploited-before-patch** and **slow patch**.
 It renders a human-readable Markdown + ASCII timeline, a metrics table, and
 machine-readable JSON for pipelines.
 
-It is **analytical and defensive only** — it measures and reports on how a
-disclosure lifecycle played out. It does not perform any active testing.
+On top of the timeline core it bundles, for **fully-offline** use:
+
+- a **262,351-record real OSV vulnerability database** (`vulndb` subcommand) —
+  resolve a timeline's CVE/GHSA references and affected packages against real
+  vulns from PyPI/npm/Go/Maven/RubyGems/crates.io/NuGet, with **zero network**;
+- an **edge / air-gap data-feed layer** (`feeds` + `build --enrich`) that
+  cross-references CVEs against the CISA-KEV and FIRST-EPSS catalogs;
+- **SARIF 2.1.0** export for code-scanning dashboards;
+- cross-language ports of the core CLI (**Go / Rust / Node**) under
+  [`ports/`](ports/), each built + tested in CI.
+
+It is **analytical, passive, and defensive only** — it measures and reports on
+how a disclosure lifecycle played out, and looks records up in bundled data. It
+performs **no active scanning, no probing, and no network calls** beyond the
+optional, explicit `feeds update` refresh of public, keyless catalogs.
 
 - Standard library only (no third-party runtime dependencies)
 - Python 3.10+
 - Maintainer: **Cognis Digital**
 - License: **COCL 1.0**
+
+## Quickstart
+
+```bash
+git clone https://github.com/cognis-digital/vulntimeline
+cd vulntimeline
+python -m pip install -e .
+
+# 1. build a disclosure timeline from the worked example
+vulntimeline build examples/advisories.json
+
+# 2. compute remediation windows + medians
+vulntimeline metrics examples/advisories.json
+
+# 3. flag risky patterns, gate CI on any finding
+vulntimeline flags examples/advisories.json --max-ttp 30 --fail-on-any
+
+# 4. resolve real vulns against the bundled 262k OSV DB — offline
+vulntimeline vulndb lookup CVE-2021-44228
+vulntimeline vulndb components PyPI:django npm:lodash
+```
 
 ---
 
@@ -127,6 +169,20 @@ Azure DevOps, or DefectDojo — to track disclosure-hygiene findings alongside
 your SAST/DAST results. `--fail-on-any` still gates the exit code when combined
 with `--sarif`.
 
+### `vulndb` — match against the bundled 262k OSV database (offline)
+
+```bash
+vulntimeline vulndb count
+vulntimeline vulndb lookup CVE-2021-44228
+vulntimeline vulndb package django --ecosystem PyPI
+vulntimeline vulndb match examples/advisories.json --fail-on-match
+vulntimeline vulndb components PyPI:django npm:lodash
+```
+
+Resolves a timeline's CVE/GHSA ids and affected packages against the bundled,
+fully-offline OSV corpus. See [Bundled vulnerability database](#bundled-vulnerability-database-vulndb--262k-real-osv-vulns-fully-offline)
+below for full details and sample output.
+
 ---
 
 ## Live data feeds (CISA-KEV / EPSS / OSV) — enrichment + air-gap
@@ -230,10 +286,151 @@ On Windows, set `PYTHONUTF8=1` for consistent encoding.
 
 ---
 
+## Bundled vulnerability database (`vulndb`) — 262k real OSV vulns, fully offline
+
+`vulntimeline` ships `vulntimeline/cognis_vulndb.jsonl.gz` — a consolidated,
+compact **OSV corpus of 262,351 real vulnerabilities** across PyPI, npm, Go,
+Maven, RubyGems, crates.io, and NuGet. Each record carries real metadata:
+canonical `id`, CVE/GHSA/RUSTSEC/PYSEC **aliases**, ecosystem, summary,
+CVSS-vector severity, affected packages, and published/modified dates.
+
+The loader (`vulntimeline.vulndb_local.VulnDB`) is pure standard library and
+**works the moment you clone** — no network, no API key, no download step. This
+is the data that lets a flat disclosure timeline be cross-referenced against the
+real-world vulnerability landscape on an air-gapped box.
+
+> **No fabricated data.** Every record is sourced from the public OSV database.
+> The bundle is a point-in-time snapshot; refresh it from upstream feeds (below)
+> when you need the latest.
+
+### `vulndb count` / `lookup` / `package`
+
+```bash
+$ vulntimeline vulndb count
+262351
+
+$ vulntimeline vulndb lookup CVE-2021-44228
+1 record(s) for CVE-2021-44228:
+      GHSA-jfh8-c2jp-5v3q  [Maven]  (CVE-2021-44228)  CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H/E:H
+        Remote code injection in Log4j
+
+$ vulntimeline vulndb package django --ecosystem PyPI --limit 3
+... (real Django CVEs from the OSV corpus) ...
+```
+
+`lookup` resolves a CVE/GHSA/RUSTSEC/PYSEC/GO id against the corpus (and all
+record aliases). `package` lists every known vulnerability affecting a package,
+optionally filtered by `--ecosystem`. Add `--json` to either for machine output.
+
+### `vulndb match` — enrich an advisories file against the bundled DB
+
+`match` takes the same advisories JSON the rest of the tool uses and resolves
+each record against the corpus by **CVE/GHSA id** (from the advisory `id`, or
+from `cve`/`aliases`/`references` extras) **and by affected package** (from
+`package`/`packages`/`component` extras):
+
+```bash
+vulntimeline vulndb match advisories.json
+vulntimeline vulndb match advisories.json --json
+vulntimeline vulndb match advisories.json --fail-on-match   # CI gate, exit 2
+```
+
+```
+# Bundled-DB match (offline OSV corpus)
+
+_1 of 2 advisories resolved against the bundled DB._
+
+## CVE-2021-44228  (11 match(es))
+*matched by: id, package*
+*query ids: CVE-2021-44228*
+      GHSA-jfh8-c2jp-5v3q  [Maven]  (CVE-2021-44228)  CVSS:3.1/...  Remote code injection in Log4j
+      GHSA-7rjr-3q55-vv33  [Maven]  (CVE-2021-45046)  ...           Incomplete fix for Apache Log4j
+      ...
+```
+
+`--fail-on-match` exits non-zero (2) if any advisory resolves to a known vuln —
+a CI gate for "did anything in this disclosure set map to a real OSV record?".
+
+### `vulndb components` — resolve SBOM-style package coordinates
+
+```bash
+vulntimeline vulndb components PyPI:django npm:lodash org.example:internal
+vulntimeline vulndb components --from-file sbom-packages.txt   # newline or JSON-array
+```
+
+Each coordinate is `name` or `ecosystem:name` (e.g. `PyPI:django`, `npm:lodash`,
+`Maven:org.apache.logging.log4j:log4j-core`). The ecosystem prefix filters
+matches to that ecosystem; otherwise the whole string is treated as a name.
+
+### Programmatic API
+
+```python
+from vulntimeline.vulndb_local import VulnDB
+db = VulnDB()                       # lazy-loads the bundled gz
+db.count()                          # -> 262351
+db.by_cve("CVE-2021-44228")         # -> [records ...]
+db.by_package("django", ecosystem="PyPI")
+db.search("deserialization", 20)    # -> summary substring matches
+```
+
+### Refreshing the corpus on the edge (NVD / OSV / GHSA)
+
+The bundle is the **offline baseline**. To pull fresh records on a connected
+staging box and carry them across an air gap, the same keyless `datafeeds`
+engine that powers `feeds` (above) fetches OSV/NVD/GHSA over HTTPS, caches to
+disk, and re-serves offline:
+
+```bash
+# on a connected box: refresh the OSV query feed + KEV + EPSS, then snapshot
+vulntimeline feeds update osv cisa-kev epss
+vulntimeline feeds snapshot-export feeds.tar.gz
+# carry feeds.tar.gz across the gap, then on the air-gapped box:
+vulntimeline feeds snapshot-import feeds.tar.gz
+```
+
+The feed catalog (`vulntimeline/data_feeds_2026.json`) also lists the OSV/NVD/
+GHSA bulk endpoints used to regenerate `cognis_vulndb.jsonl.gz` itself.
+
+---
+
+## Cross-language ports (Go / Rust / Node)
+
+The core analytical surface — the `metrics` and `flags` subcommands, with the
+same advisory input, the same remediation-window math, the same flag kinds, and
+the same `--fail-on-any` exit-code gate — is ported to three other languages
+under [`ports/`](ports/):
+
+| Port | Path | Run | Test |
+|------|------|-----|------|
+| Node.js | [`ports/node`](ports/node) | `node vulntimeline.js metrics advisories.json` | `node --test` |
+| Go | [`ports/go`](ports/go) | `go run . metrics advisories.json` | `go test ./...` |
+| Rust | [`ports/rust`](ports/rust) | `cargo run -- metrics advisories.json` | `cargo test` |
+
+Every port is **passive/offline and dependency-free** (the Rust port even ships
+a tiny std-only JSON reader so it needs zero crates). All three are built and
+tested in CI on every push via [`.github/workflows/ports.yml`](.github/workflows/ports.yml),
+and a Python parity test (`tests/test_ports_parity.py`) asserts the Node port's
+output matches the Python core byte-for-byte on the worked example.
+
+---
+
+## Scope, authorization & safety
+
+`vulntimeline` is a **defensive, analytical, authorized-use-only** tool:
+
+- **Passive by nature.** It reads advisory files, looks records up in the
+  bundled OSV DB, and renders reports. It does **no active scanning**, sends no
+  exploit payloads, and never probes a target host.
+- **Offline-first.** Every core command (build/metrics/flags/vulndb) and the
+  `--offline` feed paths run with **zero network access**. The only optional
+  network is an explicit `feeds update` against public, keyless catalogs
+  (CISA-KEV / EPSS / OSV) — never a scan of your assets.
+- **Real data only.** No fabricated CVEs, advisories, or fingerprints — the
+  bundled DB is real OSV data and the feeds are authoritative public sources.
+- Use it on systems and data you are authorized to assess.
+
+---
+
 ## License
 
 License: **COCL 1.0**. Maintained by **Cognis Digital**.
-
-## Bundled vulnerability database
-
-Ships `vulntimeline/cognis_vulndb.jsonl.gz` — **262,351 real vulnerabilities** (OSV: PyPI/npm/Go/Maven/RubyGems/crates.io/NuGet) with detailed metadata (CVE/GHSA aliases, ecosystem, severity/CVSS, affected packages, dates). Pure-stdlib offline loader `vulndb_local.VulnDB` (`count`/`by_cve`/`by_package`/`search`), air-gap ready. Refresh/extend via `datafeeds.py bulk`.

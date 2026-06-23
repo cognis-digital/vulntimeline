@@ -1,0 +1,15 @@
+[package]
+name = "vulntimeline"
+version = "1.0.0"
+edition = "2021"
+description = "Rust port of the vulntimeline core CLI (metrics + flags). Passive/offline, dependency-free."
+authors = ["Cognis Digital"]
+license = "LicenseRef-COCL-1.0"
+
+[[bin]]
+name = "vulntimeline"
+path = "src/main.rs"
+
+# Intentionally dependency-free: a hand-written minimal JSON reader keeps the
+# port std-only, so it builds anywhere with zero crate downloads.
+[dependencies]

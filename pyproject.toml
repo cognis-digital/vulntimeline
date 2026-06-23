@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 authors = [{ name = "Cognis Digital" }]
 maintainers = [{ name = "Cognis Digital" }]
-keywords = ["vulnerability", "disclosure", "timeline", "security", "remediation", "osint", "defensive"]
+keywords = ["vulnerability", "disclosure", "timeline", "security", "remediation", "osint", "defensive", "osv", "cve", "ghsa", "sarif", "kev", "epss", "air-gap", "sbom"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Environment :: Console",
@@ -37,7 +37,7 @@ dev = ["pytest>=7.0"]
 packages = ["vulntimeline"]
 
 [tool.setuptools.package-data]
-vulntimeline = ["py.typed", "data_feeds_2026.json"]
+vulntimeline = ["py.typed", "data_feeds_2026.json", "cognis_vulndb.jsonl.gz"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

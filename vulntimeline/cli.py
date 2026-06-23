@@ -4,6 +4,8 @@ Subcommands:
   build    chronological timeline (Markdown + ASCII lanes, or --json)
   metrics  per-advisory remediation windows + aggregate medians (table/json)
   flags    risky-pattern detection with an optional exit gate
+  feeds    manage the bundled CISA-KEV / EPSS / OSV feed cache (air-gap)
+  vulndb   match advisories / components against the bundled 262k OSV DB (offline)
 """
 
 from __future__ import annotations
@@ -31,6 +33,8 @@ from .render import (
 from .sarif import flags_to_sarif
 from . import feeds as feedmod
 from . import datafeeds
+from . import vulnmatch
+from .vulndb_local import VulnDB
 
 
 def _read_source(path: str) -> str:
@@ -146,6 +150,121 @@ def cmd_feeds(args: argparse.Namespace) -> int:
     return 1
 
 
+def _fmt_db_record(rec: dict) -> str:
+    aliases = ", ".join(rec.get("aliases") or []) or "-"
+    sev = rec.get("severity") or "-"
+    summ = (rec.get("summary") or "").strip().replace("\n", " ")
+    if len(summ) > 80:
+        summ = summ[:77] + "..."
+    return f"      {rec.get('id')}  [{rec.get('ecosystem') or '-'}]  ({aliases})  {sev}\n        {summ}"
+
+
+def cmd_vulndb(args: argparse.Namespace) -> int:
+    db = VulnDB(path=getattr(args, "db", None))
+    action = args.vulndb_action
+
+    if action == "count":
+        print(db.count())
+        return 0
+
+    if action == "lookup":
+        recs = db.by_cve(args.id)
+        if args.json:
+            print(json.dumps(recs, indent=2))
+            return 0
+        if not recs:
+            print(f"no records for {args.id}")
+            return 1
+        print(f"{len(recs)} record(s) for {args.id}:")
+        for r in recs:
+            print(_fmt_db_record(r))
+        return 0
+
+    if action == "package":
+        recs = db.by_package(args.name, ecosystem=getattr(args, "ecosystem", None))
+        if args.json:
+            print(json.dumps(recs, indent=2))
+            return 0
+        if not recs:
+            print(f"no records for package {args.name}")
+            return 1
+        print(f"{len(recs)} record(s) affecting {args.name}:")
+        for r in recs[: args.limit]:
+            print(_fmt_db_record(r))
+        return 0
+
+    if action == "match":
+        advisories = _load(args.advisories)
+        rows = vulnmatch.match_advisories(advisories, db=db)
+        if args.json:
+            print(json.dumps(rows, indent=2))
+            return 0
+        sys.stdout.write(_render_db_match(rows))
+        total = sum(r["match_count"] for r in rows)
+        return 2 if (args.fail_on_match and total) else 0
+
+    if action == "components":
+        comps = _component_list(args)
+        rows = vulnmatch.match_components(comps, db=db)
+        if args.json:
+            print(json.dumps(rows, indent=2))
+            return 0
+        sys.stdout.write(_render_component_match(rows))
+        total = sum(r["match_count"] for r in rows)
+        return 2 if (args.fail_on_match and total) else 0
+
+    return 1
+
+
+def _component_list(args: argparse.Namespace) -> list[str]:
+    if getattr(args, "from_file", None):
+        text = _read_source(args.from_file)
+        # accept either a JSON array of strings or a newline-delimited list
+        text_stripped = text.strip()
+        if text_stripped.startswith("["):
+            data = json.loads(text_stripped)
+            return [str(x) for x in data]
+        return [ln.strip() for ln in text_stripped.splitlines() if ln.strip()]
+    return list(args.components or [])
+
+
+def _render_db_match(rows: list) -> str:
+    lines = ["# Bundled-DB match (offline OSV corpus)", ""]
+    matched = sum(1 for r in rows if r["match_count"])
+    lines.append(f"_{matched} of {len(rows)} advisories resolved against the bundled DB._")
+    lines.append("")
+    for r in rows:
+        lines.append(f"## {r['id']}  ({r['match_count']} match(es))")
+        by = []
+        if r["matched_by_id"]:
+            by.append("id")
+        if r["matched_by_package"]:
+            by.append("package")
+        lines.append(f"*matched by: {', '.join(by) or 'none'}*")
+        if r["query_ids"]:
+            lines.append(f"*query ids: {', '.join(r['query_ids'])}*")
+        if r["query_packages"]:
+            lines.append(f"*query packages: {', '.join(r['query_packages'])}*")
+        for rec in r["db_matches"]:
+            lines.append(_fmt_db_record(rec))
+        lines.append("")
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def _render_component_match(rows: list) -> str:
+    lines = ["# Component match (offline OSV corpus)", ""]
+    vuln = sum(1 for r in rows if r["match_count"])
+    lines.append(f"_{vuln} of {len(rows)} components have known vulnerabilities in the bundled DB._")
+    lines.append("")
+    for r in rows:
+        eco = f" [{r['ecosystem']}]" if r["ecosystem"] else ""
+        lines.append(f"## {r['component']}{eco}  ({r['match_count']} match(es))")
+        for rec in r["db_matches"]:
+            lines.append(_fmt_db_record(rec))
+        lines.append("")
+    return "\n".join(lines).rstrip() + "\n"
+
+
 def cmd_metrics(args: argparse.Namespace) -> int:
     advisories = _load(args.advisories)
     metrics = aggregate_metrics(advisories)
@@ -239,6 +358,59 @@ def build_parser() -> argparse.ArgumentParser:
     f_imp = feeds_sub.add_parser("snapshot-import", help="load a snapshot into the cache")
     f_imp.add_argument("path", help="input .tar.gz path")
     p_feeds.set_defaults(func=cmd_feeds)
+
+    p_vdb = sub.add_parser(
+        "vulndb",
+        help="match advisories/components against the bundled 262k OSV DB (offline)",
+        description="Fully-offline lookups against the bundled cognis_vulndb "
+                    "(262k real OSV vulns across PyPI/npm/Go/Maven/RubyGems/"
+                    "crates.io/NuGet). No network. Defensive/authorized use only.",
+    )
+    p_vdb.add_argument("--db", default=None, help="path to an alternate .jsonl.gz corpus")
+    vdb_sub = p_vdb.add_subparsers(dest="vulndb_action", required=True)
+
+    vdb_sub.add_parser("count", help="print the number of records in the bundled DB")
+
+    v_look = vdb_sub.add_parser("lookup", help="resolve a CVE/GHSA/RUSTSEC/GO id")
+    v_look.add_argument("id", help="advisory id, e.g. CVE-2021-44228")
+    v_look.add_argument("--json", action="store_true", help="emit JSON records")
+
+    v_pkg = vdb_sub.add_parser("package", help="list vulns affecting a package")
+    v_pkg.add_argument("name", help="package name, e.g. log4j-core / django / lodash")
+    v_pkg.add_argument("--ecosystem", default=None, help="filter by ecosystem (PyPI/npm/...)")
+    v_pkg.add_argument("--limit", type=int, default=25, help="max records to print (default 25)")
+    v_pkg.add_argument("--json", action="store_true", help="emit JSON records")
+
+    v_match = vdb_sub.add_parser(
+        "match",
+        help="enrich an advisories file: resolve its CVE/GHSA ids + packages against the DB",
+    )
+    v_match.add_argument("advisories", help="path to advisories JSON ('-' for stdin)")
+    v_match.add_argument("--json", action="store_true", help="emit JSON instead of Markdown")
+    v_match.add_argument(
+        "--fail-on-match", action="store_true",
+        help="exit non-zero (2) if any advisory resolves to a known vuln (CI gate)",
+    )
+
+    v_comp = vdb_sub.add_parser(
+        "components",
+        help="resolve a list of package coordinates (SBOM-style) against the DB",
+    )
+    v_comp.add_argument(
+        "components", nargs="*",
+        help="coordinates: name or ecosystem:name (e.g. PyPI:django npm:lodash)",
+    )
+    v_comp.add_argument(
+        "--from-file", default=None,
+        help="read coordinates from a JSON array or newline-delimited file ('-' for stdin)",
+    )
+    v_comp.add_argument("--json", action="store_true", help="emit JSON instead of Markdown")
+    v_comp.add_argument(
+        "--fail-on-match", action="store_true",
+        help="exit non-zero (2) if any component has a known vuln (CI gate)",
+    )
+
+    p_vdb.set_defaults(func=cmd_vulndb)
 
     return parser
 

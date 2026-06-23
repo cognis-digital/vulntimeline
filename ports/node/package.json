@@ -1,0 +1,11 @@
+{
+  "name": "vulntimeline-node",
+  "version": "1.0.0",
+  "description": "Node.js port of the vulntimeline core CLI (metrics + flags). Passive/offline, zero dependencies.",
+  "bin": { "vulntimeline": "vulntimeline.js" },
+  "main": "vulntimeline.js",
+  "scripts": { "test": "node --test" },
+  "license": "LicenseRef-COCL-1.0",
+  "author": "Cognis Digital",
+  "private": true
+}

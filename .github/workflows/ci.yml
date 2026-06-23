@@ -34,6 +34,14 @@ jobs:
           vulntimeline metrics examples/advisories.json
           vulntimeline flags examples/advisories.json
 
+      - name: Smoke-test bundled vuln DB (offline / 262k OSV vulns)
+        run: |
+          vulntimeline vulndb count
+          vulntimeline vulndb lookup CVE-2021-44228
+          vulntimeline vulndb package django --limit 3
+          printf '{"advisories":[{"id":"CVE-2021-44228","title":"Log4Shell"}]}' \
+            | vulntimeline vulndb match - --json
+
       - name: Smoke-test data feeds (offline / air-gap)
         env:
           COGNIS_FEEDS_CACHE: ${{ github.workspace }}/demos/09-live-feed-enrichment/feeds_cache
