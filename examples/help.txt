@@ -1,0 +1,19 @@
+$ vulntimeline --help
+
+usage: vulntimeline [-h] [--version] {build,metrics,flags,feeds,vulndb} ...
+
+Vulnerability disclosure timeline builder (defensive analytics).
+
+positional arguments:
+  {build,metrics,flags,feeds,vulndb}
+    build               build a chronological disclosure timeline
+    metrics             compute remediation windows + aggregate medians
+    flags               detect risky patterns
+    feeds               manage the bundled real data feeds (CISA-KEV / EPSS /
+                        OSV)
+    vulndb              match advisories/components against the bundled 262k
+                        OSV DB (offline)
+
+options:
+  -h, --help            show this help message and exit
+  --version             show program's version number and exit

@@ -1,0 +1,3 @@
+$ vulntimeline --version
+
+vulntimeline 1.0.0

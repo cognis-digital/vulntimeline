@@ -37,6 +37,77 @@ optional, explicit `feeds update` refresh of public, keyless catalogs.
 - Maintainer: **Cognis Digital**
 - License: **COCL 1.0**
 
+
+<!-- cognis:example:start -->
+## 🔎 Example output
+
+Real, reproducible output from the tool — runs offline:
+
+```console
+$ vulntimeline --version
+vulntimeline 1.0.0
+```
+
+```console
+$ vulntimeline --help
+usage: vulntimeline [-h] [--version] {build,metrics,flags,feeds,vulndb} ...
+
+Vulnerability disclosure timeline builder (defensive analytics).
+
+positional arguments:
+  {build,metrics,flags,feeds,vulndb}
+    build               build a chronological disclosure timeline
+    metrics             compute remediation windows + aggregate medians
+    flags               detect risky patterns
+    feeds               manage the bundled real data feeds (CISA-KEV / EPSS /
+                        OSV)
+    vulndb              match advisories/components against the bundled 262k
+                        OSV DB (offline)
+
+options:
+  -h, --help            show this help message and exit
+  --version             show program's version number and exit
+```
+
+> Blocks above are real `vulntimeline` output — reproduce them from a clone.
+
+**Sample result format** _(illustrative values — run on your own data for real findings):_
+
+```
+{
+"vulnerabilities": [
+    {
+        "id": "CVE-123456",
+        "title": "Apache Log4j Remote Code Execution Vulnerability",
+        "disclosure_date": "2021-12-09T14:30:00Z",
+        "remediation_window": 7
+    },
+    {
+        "id": "CVE-789012",
+        "title": "Microsoft Exchange Server Zero-Day Exploit",
+        "disclosure_date": "2021-03-02T10:45:00Z",
+        "remediation_window": 14
+    }
+],
+"metrics": {
+    "median_remediation_window": 10.5,
+    "average_remediation_window": 11.2
+},
+"flags": [
+    {
+        "pattern": "RCE",
+        "count": 2
+    },
+    {
+        "pattern": "Zero-Day",
+        "count": 1
+    }
+]
+}
+```
+
+<!-- cognis:example:end -->
+
 ## Quickstart
 
 ```bash
