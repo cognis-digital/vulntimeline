@@ -1,0 +1,15 @@
+[2026-07-20 10:49:11] === enhance · vulntimeline · words=120000 loc>=10000 langs=9 push=True ===
+[2026-07-20 10:49:19] phase DOCS — longform 120000-word corpus -> docs/corpus/
+[2026-07-20 19:31:28] phase POLYGLOT — expanding to >= 10000 LOC across 9 languages
+[2026-07-20 19:32:04]   facets: ['cve_ingestion', 'timeline_builder', 'patch_window_calculator', 'vendor_contact_manager', 'disclosure_scheduler', 'metrics_dashboard']
+[2026-07-20 19:33:59]   +polyglot/python/cve_ingestion.py  (loc now ~5452)
+[2026-07-20 19:35:55]   +polyglot/go/cve_ingestion.go  (loc now ~5882)
+[2026-07-20 19:37:51]   +polyglot/rust/cve_ingestion.rs  (loc now ~6336)
+[2026-07-20 19:40:02]   +polyglot/typescript/cve_ingestion.ts  (loc now ~6808)
+[2026-07-20 19:41:58]   +polyglot/c/cve_ingestion.c  (loc now ~7237)
+[2026-07-20 19:44:09]   +polyglot/cpp/cve_ingestion.cpp  (loc now ~7691)
+[2026-07-20 19:46:07]   +polyglot/java/cve_ingestion.java  (loc now ~8176)
+[2026-07-20 19:48:17]   +polyglot/ruby/cve_ingestion.rb  (loc now ~8643)
+[2026-07-20 19:50:13]   +polyglot/csharp/cve_ingestion.cs  (loc now ~9115)
+[2026-07-20 19:52:09]   +polyglot/python/timeline_builder.py  (loc now ~9595)
+[2026-07-20 19:54:12]   +polyglot/go/timeline_builder.go  (loc now ~10002)
