@@ -102,3 +102,108 @@
 [2026-07-20 19:31:25]   [14] Future Directions and Emerging Trends — 5874w
 [2026-07-20 19:31:28] ASSEMBLED -> C:\Users\user\cognis-enhance\vulntimeline\docs\corpus\vulntimeline-engineering-compendium-reference\vulntimeline-engineering-compendium-reference.md (90,643 words, 14 sections)
 [2026-07-20 19:31:28] === complete · 90,643 words -> C:\Users\user\cognis-enhance\vulntimeline\docs\corpus\vulntimeline-engineering-compendium-reference\vulntimeline-engineering-compendium-reference.md ===
+[2026-09-10 01:45:14] === longform corpus · "vulntimeline — Engineering Compendium & Reference" · target ~120,000w · 14 sections × 6 subs × ~1450w · slot=uncensored · web=off ===
+[2026-09-10 01:45:18] hw: free~3.0GB target~9.5GB evicted=[]
+[2026-09-10 01:45:59] outline: 14 sections
+[2026-09-10 01:45:59]   [01] Foundations of Vulnerability Disclosure — exists, skip
+[2026-09-10 01:46:01]   pacing 5s (hot: VRAM 81.5%)
+[2026-09-10 01:46:06]   [02] The Patch-Window Concept and Its Metrics — exists, skip
+[2026-09-10 01:46:08]   pacing 5s (hot: VRAM 81.5%)
+[2026-09-10 01:50:30]     · Pre-Modern Vulnerability Disclosure: The Era o (855w)
+[2026-09-10 01:54:59]     · The Rise of Public Disclosure: From CERT to th (954w)
+[2026-09-10 01:58:05]     · The Shift to Coordinated Disclosure: The Birth (713w)
+[2026-09-10 02:03:10]     · The Commercialization of Vulnerability Researc (1080w)
+[2026-09-10 02:07:20]     · The Open Source Revolution and Its Impact on D (930w)
+[2026-09-10 02:12:03]     · The Modern Era: Patch-Window Metrics and the R (1033w)
+[2026-09-10 02:12:03]   [03] Historical Context of Vulnerability Disclosure Pra — 5637w
+[2026-09-10 02:12:05]   pacing 5s (hot: VRAM 81.6%)
+[2026-09-10 02:16:09]     · Historical Evolution of Coordinated Disclosure (741w)
+[2026-09-10 02:21:02]     · Legal and Regulatory Foundations of Coordinate (1064w)
+[2026-09-10 02:26:17]     · Technical Implementation of Coordinated Disclo (1140w)
+[2026-09-10 02:30:36]     · Stakeholder Dynamics in Coordinated Vulnerabil (937w)
+[2026-09-10 02:35:19]     · Metrics and Evaluation of Coordinated Disclosu (974w)
+[2026-09-10 02:39:33]     · Challenges and Limitations of Coordinated Disc (898w)
+[2026-09-10 02:39:33]   [04] The Role of Coordinated Disclosure in Cybersecurit — 5808w
+[2026-09-10 02:39:35]   pacing 5s (hot: VRAM 81.5%)
+[2026-09-10 02:45:04]     · Data Ingestion and Normalization Pipeline (1010w)
+[2026-09-10 02:50:30]     · Temporal Alignment and Chronological Indexing (1188w)
+[2026-09-10 02:55:26]     · Vulnerability Classification and Metadata Mapp (1092w)
+[2026-09-10 03:00:45]     · Patch-Window Calculation Engine (1155w)
+[2026-09-10 03:05:33]     · Timeline Visualization and Query Interface (1091w)
+[2026-09-10 03:10:26]     · Scalability and Performance Optimization Strat (1086w)
+[2026-09-10 03:10:26]   [05] Technical Architecture of a Timeline Builder Syste — 6665w
+[2026-09-10 03:10:28]   pacing 5s (hot: VRAM 81.5%)
+[2026-09-10 03:16:49]     · Public Vulnerability Databases and Their API I (1211w)
+[2026-09-10 03:23:45]     · Vendor-Specific Disclosure Policies and Intern (1571w)
+[2026-09-10 03:32:07]     · Automated Vulnerability Scanning Tools and The (1795w)
+[2026-09-10 03:36:34]     · Timeline Synchronization Across Disparate Data (914w)
+[2026-09-10 03:42:22]     · Metadata Extraction and Normalization Techniqu (1135w)
+[2026-09-10 03:48:02]     · Temporal Resolution and Chronological Conflict (1219w)
+[2026-09-10 03:48:02]   [06] Data Sources and Their Integration into the Timeli — 7902w
+[2026-09-10 03:48:04]   pacing 5s (hot: VRAM 85.0%)
+[2026-09-10 03:53:53]     · Data Source Identification and Schema Mapping (1089w)
+[2026-09-10 03:59:37]     · XML/JSON Parsing and Syntax Validation (1183w)
+[2026-09-10 04:03:57]     · Vulnerability Metadata Extraction and Standard (892w)
+[2026-09-10 04:10:07]     · Temporal Resolution and Timeline Alignment (1175w)
+[2026-09-10 04:16:41]     · Cross-Reference Resolution and Entity Deduplic (1310w)
+[2026-09-10 04:21:21]     · Patch Window Metric Calculation and Integratio (1023w)
+[2026-09-10 04:21:21]   [07] Automated Parsing and Normalization of Vulnerabili — 6719w
+[2026-09-10 04:21:24]   pacing 5s (hot: VRAM 85.0%)
+[2026-09-10 04:27:57]     · Defining the Disclosure Timeline Framework (1207w)
+[2026-09-10 04:32:53]     · Temporal Granularity and Event Classification (1063w)
+[2026-09-10 04:40:07]     · Temporal Metrics for Patch Window Analysis (1400w)
+[2026-09-10 04:45:14]     · Temporal Correlation with External Factors (1065w)
+[2026-09-10 05:00:17]     · Temporal Variability Across Vulnerability Type (985w)
+[2026-09-10 05:05:22]     · Temporal Anomalies and Their Implications (1067w)
+[2026-09-10 05:05:22]   [08] Temporal Analysis of Disclosure Timelines — 6831w
+[2026-09-10 05:05:24]   pacing 5s (hot: VRAM 85.0%)
+[2026-09-10 05:11:57]     · Defining the Patch-Window Metric (1102w)
+[2026-09-10 05:17:39]     · Temporal Granularity and Resolution in Patch-W (938w)
+[2026-09-10 05:24:14]     · Statistical Distribution of Patch-Window Durat (1062w)
+[2026-09-10 05:30:06]     · Correlation Between Vulnerability Criticality  (852w)
+[2026-09-10 05:35:47]     · Temporal Overlap and Concurrency in Multi-Vuln (791w)
+[2026-09-10 05:39:58]     · Temporal Shifts and Asynchrony in Vendor Respo (810w)
+[2026-09-10 05:39:58]   [09] Quantifying Patch-Window Duration and Variability — 5606w
+[2026-09-10 05:40:00]   pacing 5s (hot: VRAM 85.2%)
+[2026-09-10 05:45:43]     · Heartbleed (CVE-2014-0160): The OpenSSL Crisis (919w)
+[2026-09-10 05:51:04]     · Equifax Data Breach (CVE-2017-5638): Apache St (994w)
+[2026-09-10 05:55:25]     · Meltdown and Spectre (CVE-2017-5754, CVE-2017- (829w)
+[2026-09-10 05:59:33]     · WannaCry Ransomware (CVE-2017-0144): The Etern (782w)
+[2026-09-10 06:04:07]     · SolarWinds Supply Chain Attack (CVE-2020-14882 (965w)
+[2026-09-10 06:07:57]     · Log4j Vulnerability (CVE-2021-44288): Rapid Di (720w)
+[2026-09-10 06:07:57]   [10] Case Studies: High-Profile Vulnerability Disclosur — 5292w
+[2026-09-10 06:07:59]   pacing 5s (hot: VRAM 85.1%)
+[2026-09-10 06:12:01]     · Temporal Distribution of Vulnerability Disclos (796w)
+[2026-09-10 06:18:15]     · Correlation Between Disclosure Timing and Patc (1309w)
+[2026-09-10 06:22:52]     · Predictive Modeling of Patch Window Variabilit (974w)
+[2026-09-10 06:29:14]     · Statistical Analysis of Delayed Disclosure and (1287w)
+[2026-09-10 06:35:34]     · Regression Models for Estimating Optimal Discl (1203w)
+[2026-09-10 06:40:48]     · Empirical Evaluation of Patching Efficiency in (1056w)
+[2026-09-10 06:40:48]   [11] Statistical Modeling of Disclosure and Patching Pa — 6688w
+[2026-09-10 06:40:50]   pacing 5s (hot: VRAM 85.1%)
+[2026-09-10 06:46:39]     · Feature Engineering for Vulnerability Metrics (1062w)
+[2026-09-10 06:51:09]     · Temporal Pattern Recognition in Patch Cycles (967w)
+[2026-09-10 06:56:47]     · Anomaly Detection in Disclosure Timelines (1203w)
+[2026-09-10 07:01:16]     · Predictive Modeling of Patch Window Durations (987w)
+[2026-09-10 07:06:11]     · Transfer Learning Across Vulnerability Types (1081w)
+[2026-09-10 07:11:03]     · Evaluation Metrics for Predictive Patch-Window (1017w)
+[2026-09-10 07:11:03]   [12] Machine Learning Approaches for Predictive Patch-W — 6365w
+[2026-09-10 07:11:06]   pacing 5s (hot: VRAM 85.1%)
+[2026-09-10 07:15:22]     · Confidentiality vs. Public Interest in Vulnera (828w)
+[2026-09-10 07:20:31]     · Bias in Timeline Construction: Actor-Driven vs (1158w)
+[2026-09-10 07:25:06]     · Temporal Dynamics of Patch Windows and Risk Ex (993w)
+[2026-09-10 07:29:19]     · Legal Liabilities and Liability Shifting in Di (956w)
+[2026-09-10 07:34:20]     · Ethical Implications of Delayed Disclosure and (1040w)
+[2026-09-10 07:39:15]     · Transparency in Methodology: Ensuring Reproduc (1070w)
+[2026-09-10 07:39:15]   [13] Ethical Considerations in Timeline Construction an — 6106w
+[2026-09-10 07:39:17]   pacing 5s (hot: VRAM 85.1%)
+[2026-09-10 07:44:08]     · Integration with Automated Patch Management Sy (1008w)
+[2026-09-10 07:46:27]     · Real-Time Vulnerability Impact Analysis in Dyn (24w)
+[2026-09-10 07:50:04]     · Predictive Modeling of Patch Window Durations  (24w)
+[2026-09-10 07:53:07]     · Cross-Platform Vulnerability Correlation and T (24w)
+[2026-09-10 07:56:00]     · Machine Learning-Driven Anomaly Detection in D (24w)
+[2026-09-10 07:59:16]     · Policy-Driven Vulnerability Disclosure Optimiz (24w)
+[2026-09-10 07:59:16]   [14] Frontier Applications and Future Directions of Vul — 1183w
+[2026-09-10 07:59:19]   pacing 5s (hot: VRAM 81.7%)
+[2026-09-10 07:59:24] ASSEMBLED -> C:\Users\user\cognis-enhance\vulntimeline\docs\corpus\vulntimeline-engineering-compendium-reference\vulntimeline-engineering-compendium-reference.md (161,445 words, 26 sections)
+[2026-09-10 07:59:24] === complete · 161,445 words -> C:\Users\user\cognis-enhance\vulntimeline\docs\corpus\vulntimeline-engineering-compendium-reference\vulntimeline-engineering-compendium-reference.md ===
